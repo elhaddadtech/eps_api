@@ -1,0 +1,237 @@
+{
+    "info": {
+        "name": "Laravel API Collection - CRUD",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/users"
+                    }
+                },
+                {
+                    "name": "Create User",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/api/users",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"John Doe\", \"email\": \"john@example.com\", \"password\": \"password\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get User",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/users/1"
+                    }
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{base_url}}/api/users/1",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Updated Name\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{base_url}}/api/users/1"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Destinations",
+            "item": [
+                {
+                    "name": "Get All Destinations",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/destinations"
+                    }
+                },
+                {
+                    "name": "Create Destination",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/api/destinations",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"slug\": \"canada\", \"video_url\": \"http://example.com/video\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Destination",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/destinations/1"
+                    }
+                },
+                {
+                    "name": "Update Destination",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{base_url}}/api/destinations/1",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"slug\": \"updated-canada\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Destination",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{base_url}}/api/destinations/1"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Consultations",
+            "item": [
+                {
+                    "name": "Get All Consultations",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/consultations"
+                    }
+                },
+                {
+                    "name": "Create Consultation",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/api/consultations",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Alice\", \"email\": \"alice@example.com\", \"destination_id\": 1, \"message\": \"Interested in Canada\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Consultation",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/consultations/1"
+                    }
+                },
+                {
+                    "name": "Update Consultation",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{base_url}}/api/consultations/1",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"message\": \"Updated Message\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Consultation",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{base_url}}/api/consultations/1"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Blog Posts",
+            "item": [
+                {
+                    "name": "Get All Blog Posts",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/blog-posts"
+                    }
+                },
+                {
+                    "name": "Create Blog Post",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/api/blog-posts",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"slug\": \"new-blog-post\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Blog Post",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/blog-posts/1"
+                    }
+                },
+                {
+                    "name": "Update Blog Post",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{base_url}}/api/blog-posts/1",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"slug\": \"updated-blog-post\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Blog Post",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{base_url}}/api/blog-posts/1"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Contacts",
+            "item": [
+                {
+                    "name": "Get All Contacts",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/contacts"
+                    }
+                },
+                {
+                    "name": "Create Contact",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/api/contacts",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Bob\", \"email\": \"bob@example.com\", \"message\": \"I need information\"}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Contact",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/api/contacts/1"
+                    }
+                },
+                {
+                    "name": "Delete Contact",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{base_url}}/api/contacts/1"
+                    }
+                }
+            ]
+        }
+    ]
+}
