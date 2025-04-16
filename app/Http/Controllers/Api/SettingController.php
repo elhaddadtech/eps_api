@@ -29,7 +29,14 @@ class SettingController extends Controller {
 
   public function update(Request $request, $id) {
     $setting = Setting::findOrFail($id);
-    $setting->update($request->all());
+
+    $validated = $request->validate([
+      'key'      => 'sometimes|required|string|unique:settings,key,' . $setting->id,
+      'value'    => 'sometimes|required|string',
+      'language' => 'sometimes|required|in:fr,ar,en',
+    ]);
+
+    $setting->update($validated);
 
     return response()->json($setting);
   }
@@ -41,15 +48,22 @@ class SettingController extends Controller {
   }
 
   public function getByKey($key, $language) {
-    $setting = Setting::where('key', $key)->where('language', $language)->first();
+    // Try to get setting by requested language
+    $setting = Setting::where('key', $key)
+      ->where('language', $language)
+      ->first();
 
-    return response()->json($setting ?? ['message' => 'Paramètre non trouvé'], 200);
+    // Fallback to 'fr' if not found
+    if (!$setting && $language !== 'fr') {
+      $setting = Setting::where('key', $key)
+        ->where('language', 'fr')
+        ->first();
+    }
+
+    if ($setting) {
+      return response()->json($setting);
+    }
+
+    return response()->json(['message' => 'Paramètre non trouvé'], 404);
   }
-  public function getByKey($key, $language)
-{
-    $setting = Setting::where('key', $key)->where('language', $language)->first();
-
-    return response()->json($setting ?? ['message' => 'Paramètre non trouvé'], 200);
-}
-
 }

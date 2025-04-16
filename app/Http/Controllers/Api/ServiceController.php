@@ -10,22 +10,52 @@ use Illuminate\Support\Facades\DB;
 class ServiceController extends Controller {
   // 📌 Afficher les services en fonction de la langue
   public function indexByLanguage($lang) {
+    // Try to fetch services in the requested language
     $services = Service::whereHas('translations', function ($query) use ($lang) {
       $query->where('language', $lang);
     })->with(['translations' => function ($query) use ($lang) {
       $query->where('language', $lang);
     }])->get();
 
+    // Fallback to 'fr' if no services found
+    if ($services->isEmpty()) {
+      $lang = 'fr';
+
+      $services = Service::whereHas('translations', function ($query) use ($lang) {
+        $query->where('language', $lang);
+      })->with(['translations' => function ($query) use ($lang) {
+        $query->where('language', $lang);
+      }])->get();
+    }
+
     return response()->json($services);
   }
 
   //show methode by language
   public function show($id, $lang) {
-    $services = Service::whereHas('translations', function ($query) use ($lang, $id) {
-      $query->where('language', $lang)->where('service_id', $id);
-    })->with(['translations' => function ($query) use ($lang, $id) {
-      $query->where('language', $lang)->where('service_id', $id);
-    }])->get();
+    // Try fetching the service with the requested language
+    $services = Service::where('id', $id)
+      ->whereHas('translations', function ($query) use ($lang) {
+        $query->where('language', $lang);
+      })
+      ->with(['translations' => function ($query) use ($lang) {
+        $query->where('language', $lang);
+      }])
+      ->get();
+
+    // Fallback to French if no data found
+    if ($services->isEmpty() && $lang !== 'fr') {
+      $lang = 'fr';
+
+      $services = Service::where('id', $id)
+        ->whereHas('translations', function ($query) use ($lang) {
+          $query->where('language', $lang);
+        })
+        ->with(['translations' => function ($query) use ($lang) {
+          $query->where('language', $lang);
+        }])
+        ->get();
+    }
 
     return response()->json($services);
   }

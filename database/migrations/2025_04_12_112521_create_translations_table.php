@@ -9,12 +9,11 @@ return new class extends Migration {
    * Run the migrations.
    */
   public function up(): void {
-    Schema::create('blog_translations', function (Blueprint $table) {
+    Schema::create('translations', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('blog_id')->constrained()->onDelete('cascade');
+      $table->string('key')->index();
       $table->enum('language', ['fr', 'ar', 'en']);
-      $table->string('title');
-      $table->text('content');
+      $table->text('value');
       $table->timestamps();
     });
   }
@@ -23,6 +22,6 @@ return new class extends Migration {
    * Reverse the migrations.
    */
   public function down(): void {
-    Schema::dropIfExists('blog_translations');
+    Schema::dropIfExists('translations');
   }
 };

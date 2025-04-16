@@ -16,11 +16,26 @@ class BlogController extends Controller {
   public function indexByLanguage(Request $request) {
     $lang = $request->lang;
 
+    // Get blogs in requested language
     $blogs = Blog::whereHas('translations', function ($query) use ($lang) {
       $query->where('language', $lang);
     })->with(['translations' => function ($query) use ($lang) {
       $query->where('language', $lang);
-    }])->get()->map(function ($blog) {
+    }])->get();
+
+    // Fallback to 'fr' if none found
+    if ($blogs->isEmpty()) {
+      $lang = 'fr';
+
+      $blogs = Blog::whereHas('translations', function ($query) use ($lang) {
+        $query->where('language', $lang);
+      })->with(['translations' => function ($query) use ($lang) {
+        $query->where('language', $lang);
+      }])->get();
+    }
+
+    // Format dates
+    $blogs = $blogs->map(function ($blog) {
       $blog->created_at = $blog->created_at->format('Y-m-d');
       $blog->updated_at = $blog->updated_at->format('Y-m-d');
 

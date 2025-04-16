@@ -9,15 +9,13 @@ return new class extends Migration {
    * Run the migrations.
    */
   public function up(): void {
-    Schema::create('consultations', function (Blueprint $table) {
+    Schema::create('faqs', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('user_id')->constrained()->onDelete('cascade');
+      $table->enum('language', ['fr', 'ar', 'en']);
       $table->foreignId('destination_id')->constrained()->onDelete('cascade');
-      $table->string('phone');
-      $table->string('gender')->nullable();
-      $table->string('agency')->nullable();
-      $table->text('message')->nullable();
-      $table->enum('status', ['pending', 'confirmed', 'rejected'])->default('pending');
+      $table->text('question');
+      $table->text('answer');
+      $table->integer('order_index')->default(0);
       $table->timestamps();
     });
   }
@@ -26,6 +24,6 @@ return new class extends Migration {
    * Reverse the migrations.
    */
   public function down(): void {
-    Schema::dropIfExists('consultations');
+    Schema::dropIfExists('faqs');
   }
 };

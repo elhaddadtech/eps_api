@@ -13,6 +13,9 @@ return new class extends Migration {
       $table->id();
       $table->string('country');
       $table->string('city');
+      $table->string('image')->nullable();
+      $table->string('url')->nullable();
+
       $table->timestamps();
     });
   }

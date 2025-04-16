@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\DestinationController;
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\TranslationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -51,8 +54,17 @@ Route::get('/destinations/{id}/{lang}', [DestinationController::class, 'show'])-
 Route::post('/destinations', [DestinationController::class, 'store']);
 Route::put('/destinations/{destination}', [DestinationController::class, 'update']);
 Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy']);
+// FAQs
+Route::get('/destinations/{destinationId}/faqs/{lang}', [FaqController::class, 'index'])->middleware(FilterByLanguage::class);
 //blog
 Route::get('/blogs/{lang}', [BlogController::class, 'indexByLanguage'])->middleware(FilterByLanguage::class);
 Route::get('/blogs/{id}/{lang}', [BlogController::class, 'show'])->middleware(FilterByLanguage::class);
 Route::apiResource('blogs', BlogController::class);
+//translations
+Route::get('/translations/{lang}', [TranslationController::class, 'indexByLanguage'])
+  ->middleware(FilterByLanguage::class);
+//consultations
+Route::get('/consultation', [ConsultationController::class, 'index']);
+Route::get('/consultations', [ConsultationController::class, 'store']);
+
 // });

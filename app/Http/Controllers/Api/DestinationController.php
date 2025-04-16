@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Destination;
+use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,18 +15,54 @@ class DestinationController extends Controller {
     })->with(['translations' => function ($query) use ($lang) {
       $query->where('language', $lang);
     }])->get();
+    if ($destinations->isEmpty()) {
+      $lang         = 'fr';
+      $destinations = Destination::whereHas('translations', function ($query) use ($lang) {
+        $query->where('language', $lang);
+      })->with(['translations' => function ($query) use ($lang) {
+        $query->where('language', $lang);
+      }])->get();
+    }
 
     return response()->json($destinations);
   }
 
   public function show($id, $lang) {
+    $lang = strtolower($lang);
+
+    // Get FAQs in the requested language
+    $fqs = Faq::where('destination_id', $id)
+      ->where('language', $lang)
+      ->orderBy('order_index')
+      ->get();
+
+    // Get destination with translations in requested language
     $destinations = Destination::whereHas('translations', function ($query) use ($lang, $id) {
       $query->where('language', $lang)->where('destination_id', $id);
     })->with(['translations' => function ($query) use ($lang, $id) {
       $query->where('language', $lang)->where('destination_id', $id);
     }])->get();
 
-    return response()->json($destinations);
+    // If both are empty, fallback to 'fr'
+    if ($fqs->isEmpty() && $destinations->isEmpty() && $lang !== 'fr') {
+      $lang = 'fr';
+
+      $fqs = Faq::where('destination_id', $id)
+        ->where('language', $lang)
+        ->orderBy('order_index')
+        ->get();
+
+      $destinations = Destination::whereHas('translations', function ($query) use ($lang, $id) {
+        $query->where('language', $lang)->where('destination_id', $id);
+      })->with(['translations' => function ($query) use ($lang, $id) {
+        $query->where('language', $lang)->where('destination_id', $id);
+      }])->get();
+    }
+
+    return response()->json([
+      'Destinations' => $destinations,
+      'Fqa'          => $fqs,
+    ]);
   }
 
   public function store(Request $request) {
